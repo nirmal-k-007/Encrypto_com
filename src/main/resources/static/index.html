@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Online Users</title>
+    
+</head>
+<body>
+
+    <div id="userContainer">
+        <h3>Online Users</h3>
+        <!-- The user list will be populated here -->
+        <div id="userList">
+            <!-- Example user items -->
+            <div class="user-item" onclick="openChat('Alice')">Alice</div>
+            <div class="user-item" onclick="openChat('Bob')">Bob</div>
+            <div class="user-item" onclick="openChat('Charlie')">Charlie</div>
+        </div>
+    </div>
+
+    <div id="chatWindow">
+        <h3 id="chatWithUser">Chat with: </h3>
+        <div id="chatMessages">
+            <!-- Messages will appear here -->
+        </div>
+        <textarea id="messageInput" placeholder="Type your message..."></textarea>
+        <button id="sendMessageButton" onclick="sendMessage()">Send</button>
+    </div>
+
+    
+
+</body>
+</html>
