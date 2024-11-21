@@ -22,7 +22,9 @@ public class RequestController {
 
     @PostMapping("/generation")
     public String generateOTPController(@RequestBody UserData data) throws JsonProcessingException {
-        return rs.generateOTPservice(data);
+        System.out.println(data.getEmail());
+        String res = rs.generateOTPservice(data);
+        return res;
     }
 
     @PostMapping("/verification")
@@ -37,8 +39,10 @@ public class RequestController {
 
     @PostMapping("/login")
     public String loginUserController(@RequestBody UserData data) {
-        System.out.println(data.getPublic_key());
-        return rs.loginUserService(data);
+        System.out.println(data.getEmail());
+        String result = rs.loginUserService(data);
+        System.out.println(result);
+        return result;
     }
 
     @PostMapping("/updateCredentials")
