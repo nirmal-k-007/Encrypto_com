@@ -174,3 +174,20 @@ public class JDBCRepositary {
     }
 
 }
+
+
+/*
+Database changed
+mysql> describe Users;
++------------+--------------+------+-----+---------+----------------+
+        | Field      | Type         | Null | Key | Default | Extra          |
+        +------------+--------------+------+-----+---------+----------------+
+        | user_id    | int          | NO   | PRI | NULL    | auto_increment |
+        | username   | varchar(50)  | NO   | UNI | NULL    |                |
+        | name       | varchar(100) | NO   |     | NULL    |                |
+        | password   | varchar(255) | NO   |     | NULL    |                |
+        | email      | varchar(100) | NO   | UNI | NULL    |                |
+        | public_key | text         | NO   | UNI | NULL    |                |
+        | active     | tinyint(1)   | YES  |     | 0       |                |
+        +------------+--------------+------+-----+---------+----------------+
+*/
