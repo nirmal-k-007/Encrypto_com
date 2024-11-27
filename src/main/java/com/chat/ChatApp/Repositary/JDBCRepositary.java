@@ -2,14 +2,14 @@ package com.chat.ChatApp.Repositary;
 
 import com.chat.ChatApp.Models.UpdateData;
 import com.chat.ChatApp.Models.UserData;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Repository;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import java.sql.*;
 
 @Repository
 public class JDBCRepositary {
@@ -33,11 +33,8 @@ public class JDBCRepositary {
                 ResultSet rs = stmt.executeQuery();
 
                 // If data is found, return the corresponding username
-                if (rs.next()) {
-                    return true;
-                } else {
-                    return false;  // Return null if no match is found
-                }
+                // Return null if no match is found
+                return rs.next();
             } catch (SQLException e) {
                 e.printStackTrace();
                 return false;  // Return null if there is an exception
@@ -46,9 +43,9 @@ public class JDBCRepositary {
         }
 
 
-        public static String checkCredentials(String tableName, String emailColumn, String passwordColumn, String usernameColumn, String email, String pwd) {
+        public static String checkCredentials(String tableName, String emailColumn, String passwordColumn, String usernameColumn,String nameColumn, String email, String pwd) {
 
-            String query = "SELECT " + usernameColumn + " FROM " + tableName + " WHERE " + emailColumn + " = ? AND " + passwordColumn + " = ?";
+            String query = "SELECT " + usernameColumn + "," + nameColumn+ " FROM " + tableName + " WHERE " + emailColumn + " = ? AND " + passwordColumn + " = ?";
 
             try (Connection conn = DriverManager.getConnection(url, user, password);
                  PreparedStatement stmt = conn.prepareStatement(query)) {
@@ -62,13 +59,18 @@ public class JDBCRepositary {
 
                 // If data is found, return the corresponding username
                 if (rs.next()) {
-                    return rs.getString(usernameColumn);
+                    String[] res = new String[2];
+                    res[0] = rs.getString(usernameColumn);
+                    res[1] = rs.getString("name");
+                    return new ObjectMapper().writeValueAsString(res);
                 } else {
                     return null;  // Return null if no match is found
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
                 return null;  // Return null if there is an exception
+            } catch (JsonProcessingException e) {
+                throw new RuntimeException(e);
             }
         }
 
@@ -108,7 +110,7 @@ public class JDBCRepositary {
         boolean check = availability(data.getEmail(),"Users","email");
 
         if(check){
-            String res = checkCredentials("Users","email","password", "username", data.getEmail(), data.getPwd());
+            String res = checkCredentials("Users","email","password", "username","name", data.getEmail(), data.getPwd());
             if(res!=null){
                 return res;
             }
@@ -118,7 +120,7 @@ public class JDBCRepositary {
             }
         }
         else {
-            return "User Not Registered\nKindly Sign Up";
+            return "User Not Registered";
         }
     }
 
@@ -146,4 +148,29 @@ public class JDBCRepositary {
             return rowsUpdated;
         }
 
+    public static String searchUserRepositary(String uname) {
+
+        String query = "SELECT public_key from Users WHERE username = ? ";
+
+        try (Connection conn = DriverManager.getConnection(url, user, password);
+             PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            // Set the parameters in the query
+            stmt.setString(1, uname);
+
+            // Execute the query
+            ResultSet rs = stmt.executeQuery();
+
+            // If data is found, return the corresponding username
+            if (rs.next()) {
+                return rs.getString(1);
+            } else {
+                return "No";  // Return null if no match is found
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return "Error";  // Return null if there is an exception
+        }
     }
+
+}

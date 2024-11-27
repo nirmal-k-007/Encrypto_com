@@ -4,11 +4,9 @@ import com.chat.ChatApp.Models.UpdateData;
 import com.chat.ChatApp.Models.UserData;
 import com.chat.ChatApp.Services.RequestService;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import org.apache.tomcat.util.json.JSONParser;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 
 
 
@@ -45,9 +43,20 @@ public class RequestController {
         return result;
     }
 
+
+
     @PostMapping("/updateCredentials")
     public String updateUserCredentialsController(@RequestBody UpdateData data) {
-        return rs.updateUserCredentialsService(data);
+        String res = rs.updateUserCredentialsService(data);
+        System.out.println(res);
+        return res;
+    }
+
+    @PostMapping("/searchUser")
+    public String searchUserController(@RequestBody String uname) {
+        String res = rs.searchUserService(uname);
+        System.out.println(res);
+        return res;
     }
 
 

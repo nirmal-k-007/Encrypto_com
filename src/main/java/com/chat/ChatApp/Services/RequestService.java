@@ -1,14 +1,12 @@
 package com.chat.ChatApp.Services;
 
-import java.security.*;
-import java.util.Base64;
+
 import java.util.Random;
 
 import com.chat.ChatApp.Models.UpdateData;
 import com.chat.ChatApp.Models.UserData;
 import com.chat.ChatApp.Repositary.JDBCRepositary;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Repository;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -78,5 +76,10 @@ public class RequestService {
         else {
             return "Failed";
         }
+    }
+
+
+    public String searchUserService(String uname) {
+        return repo.searchUserRepositary(uname);
     }
 }
